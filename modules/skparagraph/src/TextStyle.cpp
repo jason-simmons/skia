@@ -134,7 +134,7 @@ bool TextStyle::matchOneAttribute(StyleType styleType, const TextStyle& other) c
                    fFontSize == other.fFontSize &&
                    fHeight == other.fHeight;
         default:
-            SkASSERT(false);
+            SkASSERT_RELEASE(false);
             return false;
     }
 }

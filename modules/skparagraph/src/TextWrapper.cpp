@@ -276,7 +276,7 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
             }
             lastRun = cluster->run();
             if (lastRun->placeholderStyle() != nullptr) {
-                SkASSERT(lastRun->size() == 1);
+                SkASSERT_RELEASE(lastRun->size() == 1);
                 // Update the placeholder metrics so we can get the placeholder positions later
                 // and the line metrics (to make sure the placeholder fits)
                 lastRun->updateMetrics(&fEndLine.metrics());

@@ -12,7 +12,7 @@ namespace textlayout {
 int TypefaceFontProvider::onCountFamilies() const { return fRegisteredFamilies.count(); }
 
 void TypefaceFontProvider::onGetFamilyName(int index, SkString* familyName) const {
-    SkASSERT(index < fRegisteredFamilies.count());
+    SkASSERT_RELEASE(index < fRegisteredFamilies.count());
     familyName->set(fFamilyNames[index]);
 }
 
@@ -61,7 +61,7 @@ TypefaceFontStyleSet::TypefaceFontStyleSet(const SkString& familyName)
 int TypefaceFontStyleSet::count() { return fStyles.size(); }
 
 void TypefaceFontStyleSet::getStyle(int index, SkFontStyle* style, SkString* name) {
-    SkASSERT(index < fStyles.count());
+    SkASSERT_RELEASE(index < fStyles.count());
     if (style) {
         *style = fStyles[index]->fontStyle();
     }
@@ -71,7 +71,7 @@ void TypefaceFontStyleSet::getStyle(int index, SkFontStyle* style, SkString* nam
 }
 
 SkTypeface* TypefaceFontStyleSet::createTypeface(int index) {
-    SkASSERT(index < fStyles.count());
+    SkASSERT_RELEASE(index < fStyles.count());
     return SkRef(fStyles[index].get());
 }
 

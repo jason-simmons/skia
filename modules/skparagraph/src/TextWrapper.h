@@ -120,7 +120,7 @@ class TextWrapper {
         }
 
         void trim(Cluster* cluster) {
-            SkASSERT(fEnd.cluster() == cluster);
+            SkASSERT_RELEASE(fEnd.cluster() == cluster);
             if (fEnd.cluster() > fStart.cluster()) {
                 fEnd.move(false);
                 fWidth -= cluster->width();

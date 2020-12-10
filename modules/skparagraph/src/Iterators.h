@@ -21,7 +21,7 @@ public:
             , fCurrentLocale(defaultStyle.getLocale()) {}
 
     void consume() override {
-        SkASSERT(fCurrentChar < fText.end());
+        SkASSERT_RELEASE(fCurrentChar < fText.end());
 
         if (fCurrentStyle == fTextStyles.end()) {
             fCurrentChar = fText.end();

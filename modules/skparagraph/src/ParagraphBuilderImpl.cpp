@@ -44,7 +44,7 @@ ParagraphBuilderImpl::ParagraphBuilderImpl(
         , fUtf8()
         , fFontCollection(std::move(fontCollection))
         , fUnicode(std::move(unicode)) {
-    SkASSERT(fUnicode);
+    SkASSERT_RELEASE(fUnicode);
     this->setParagraphStyle(style);
 }
 

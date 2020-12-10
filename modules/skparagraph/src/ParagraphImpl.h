@@ -70,7 +70,7 @@ struct StyleBlock {
     StyleBlock(size_t start, size_t end, const TStyle& style) : fRange(start, end), fStyle(style) {}
     StyleBlock(TextRange textRange, const TStyle& style) : fRange(textRange), fStyle(style) {}
     void add(TextRange tail) {
-        SkASSERT(fRange.end == tail.start);
+        SkASSERT_RELEASE(fRange.end == tail.start);
         fRange = TextRange(fRange.start, fRange.start + fRange.width() + tail.width());
     }
     TextRange fRange;
@@ -165,11 +165,11 @@ public:
     Cluster& cluster(ClusterIndex clusterIndex);
     ClusterIndex clusterIndex(TextIndex textIndex) {
         auto clusterIndex = this->fClustersIndexFromCodeUnit[textIndex];
-        SkASSERT(clusterIndex != EMPTY_INDEX);
+        SkASSERT_RELEASE(clusterIndex != EMPTY_INDEX);
         return clusterIndex;
     }
     Run& run(RunIndex runIndex) {
-        SkASSERT(runIndex < fRuns.size());
+        SkASSERT_RELEASE(runIndex < fRuns.size());
         return fRuns[runIndex];
     }
 

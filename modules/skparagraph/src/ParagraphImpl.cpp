@@ -79,7 +79,7 @@ ParagraphImpl::ParagraphImpl(const SkString& text,
         , fOldHeight(0)
         , fUnicode(std::move(unicode))
 {
-    SkASSERT(fUnicode);
+    SkASSERT_RELEASE(fUnicode);
 }
 
 ParagraphImpl::ParagraphImpl(const std::u16string& utf16text,
@@ -95,7 +95,7 @@ ParagraphImpl::ParagraphImpl(const std::u16string& utf16text,
                         std::move(fonts),
                         std::move(unicode))
 {
-    SkASSERT(fUnicode);
+    SkASSERT_RELEASE(fUnicode);
     fText =  fUnicode->convertUtf16ToUtf8(utf16text);
 }
 
@@ -322,7 +322,7 @@ void ParagraphImpl::buildClusterTable() {
                                                                    size_t charEnd,
                                                                    SkScalar width,
                                                                    SkScalar height) {
-                SkASSERT(charEnd >= charStart);
+                SkASSERT_RELEASE(charEnd >= charStart);
                 // Add info to cluster indexes table (text -> cluster)
                 for (auto i = charStart; i < charEnd; ++i) {
                   fClustersIndexFromCodeUnit[i] = fClusters.size();
@@ -360,10 +360,10 @@ void ParagraphImpl::spaceGlyphs() {
             Block* currentStyle = this->fTextStyles.begin();
             while (!cluster->startsIn(currentStyle->fRange)) {
                 currentStyle++;
-                SkASSERT(currentStyle != this->fTextStyles.end());
+                SkASSERT_RELEASE(currentStyle != this->fTextStyles.end());
             }
 
-            SkASSERT(!currentStyle->fStyle.isPlaceholder());
+            SkASSERT_RELEASE(!currentStyle->fStyle.isPlaceholder());
 
             // Process word spacing
             if (currentStyle->fStyle.getWordSpacing() != 0) {
@@ -734,18 +734,18 @@ void ParagraphImpl::getLineMetrics(std::vector<LineMetrics>& metrics) {
 }
 
 SkSpan<const char> ParagraphImpl::text(TextRange textRange) {
-    SkASSERT(textRange.start <= fText.size() && textRange.end <= fText.size());
+    SkASSERT_RELEASE(textRange.start <= fText.size() && textRange.end <= fText.size());
     auto start = fText.c_str() + textRange.start;
     return SkSpan<const char>(start, textRange.width());
 }
 
 SkSpan<Cluster> ParagraphImpl::clusters(ClusterRange clusterRange) {
-    SkASSERT(clusterRange.start < fClusters.size() && clusterRange.end <= fClusters.size());
+    SkASSERT_RELEASE(clusterRange.start < fClusters.size() && clusterRange.end <= fClusters.size());
     return SkSpan<Cluster>(&fClusters[clusterRange.start], clusterRange.width());
 }
 
 Cluster& ParagraphImpl::cluster(ClusterIndex clusterIndex) {
-    SkASSERT(clusterIndex < fClusters.size());
+    SkASSERT_RELEASE(clusterIndex < fClusters.size());
     return fClusters[clusterIndex];
 }
 
@@ -755,12 +755,12 @@ Run& ParagraphImpl::runByCluster(ClusterIndex clusterIndex) {
 }
 
 SkSpan<Block> ParagraphImpl::blocks(BlockRange blockRange) {
-    SkASSERT(blockRange.start < fTextStyles.size() && blockRange.end <= fTextStyles.size());
+    SkASSERT_RELEASE(blockRange.start < fTextStyles.size() && blockRange.end <= fTextStyles.size());
     return SkSpan<Block>(&fTextStyles[blockRange.start], blockRange.width());
 }
 
 Block& ParagraphImpl::block(BlockIndex blockIndex) {
-    SkASSERT(blockIndex < fTextStyles.size());
+    SkASSERT_RELEASE(blockIndex < fTextStyles.size());
     return fTextStyles[blockIndex];
 }
 
@@ -851,7 +851,7 @@ void ParagraphImpl::updateText(size_t from, SkString text) {
 
 void ParagraphImpl::updateFontSize(size_t from, size_t to, SkScalar fontSize) {
 
-  SkASSERT(from == 0 && to == fText.size());
+  SkASSERT_RELEASE(from == 0 && to == fText.size());
   auto defaultStyle = fParagraphStyle.getTextStyle();
   defaultStyle.setFontSize(fontSize);
   fParagraphStyle.setTextStyle(defaultStyle);
@@ -874,7 +874,7 @@ void ParagraphImpl::updateTextAlign(TextAlign textAlign) {
 }
 
 void ParagraphImpl::updateForegroundPaint(size_t from, size_t to, SkPaint paint) {
-    SkASSERT(from == 0 && to == fText.size());
+    SkASSERT_RELEASE(from == 0 && to == fText.size());
     auto defaultStyle = fParagraphStyle.getTextStyle();
     defaultStyle.setForegroundColor(paint);
     fParagraphStyle.setTextStyle(defaultStyle);
@@ -885,7 +885,7 @@ void ParagraphImpl::updateForegroundPaint(size_t from, size_t to, SkPaint paint)
 }
 
 void ParagraphImpl::updateBackgroundPaint(size_t from, size_t to, SkPaint paint) {
-    SkASSERT(from == 0 && to == fText.size());
+    SkASSERT_RELEASE(from == 0 && to == fText.size());
     auto defaultStyle = fParagraphStyle.getTextStyle();
     defaultStyle.setBackgroundColor(paint);
     fParagraphStyle.setTextStyle(defaultStyle);
@@ -928,7 +928,7 @@ void ParagraphImpl::ensureUTF16Mapping() {
         for (auto i = index; i < next; ++i) {
             fUTF16IndexForUTF8Index.emplace_back(fUTF8IndexForUTF16Index.size());
         }
-        SkASSERT(fUTF16IndexForUTF8Index.size() == next);
+        SkASSERT_RELEASE(fUTF16IndexForUTF8Index.size() == next);
 
         // One or two codepoints refer to the same text index
         uint16_t buffer[2];

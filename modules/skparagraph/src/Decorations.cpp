@@ -6,9 +6,9 @@
 
 static void draw_line_as_rect(SkCanvas* canvas, SkScalar x, SkScalar y, SkScalar width,
                               const SkPaint& paint) {
-    SkASSERT(paint.getPathEffect() == nullptr);
-    SkASSERT(paint.getStrokeCap() == SkPaint::kButt_Cap);
-    SkASSERT(paint.getStrokeWidth() > 0);   // this trick won't work for hairlines
+    SkASSERT_RELEASE(paint.getPathEffect() == nullptr);
+    SkASSERT_RELEASE(paint.getStrokeCap() == SkPaint::kButt_Cap);
+    SkASSERT_RELEASE(paint.getStrokeWidth() > 0);   // this trick won't work for hairlines
 
     SkPaint p(paint);
     p.setStroke(false);
@@ -174,7 +174,7 @@ void Decorations::calculatePosition(TextDecoration decoration, SkScalar ascent) 
           fPosition -= ascent;
           break;
       }
-      default:SkASSERT(false);
+      default:SkASSERT_RELEASE(false);
           break;
     }
 }

@@ -139,7 +139,7 @@ TextLine::TextLine(ParagraphImpl* owner,
         fMaxRunMetrics.add(
             InternalLineMetrics(run.fFontMetrics.fAscent, run.fFontMetrics.fDescent, run.fFontMetrics.fLeading));
     }
-    SkASSERT(runLevelsIndex == numRuns);
+    SkASSERT_RELEASE(runLevelsIndex == numRuns);
 
     SkAutoSTArray<kPreallocCount, int32_t> logicalOrder(numRuns);
 
@@ -450,7 +450,7 @@ void TextLine::justify(SkScalar maxWidth) {
     });
 
     SkAssertResult(nearlyEqual(shift, maxWidth - textLen));
-    SkASSERT(whitespacePatches == 0);
+    SkASSERT_RELEASE(whitespacePatches == 0);
 
     this->fWidthWithSpaces += ghostShift;
     this->fAdvance.fX = maxWidth;
@@ -530,7 +530,7 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis, Run* run)
         void commitRunInfo() override {}
 
         Buffer runBuffer(const RunInfo& info) override {
-            SkASSERT(!fRun);
+            SkASSERT_RELEASE(!fRun);
             fRun = std::make_unique<Run>(nullptr, info, 0, fLineHeight, 0, 0);
             return fRun->newRunBuffer();
         }
@@ -569,7 +569,7 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
 
     if (run->fEllipsis) {
         // Both ellipsis and placeholders can only be measured as one glyph
-        SkASSERT(textRange == run->textRange());
+        SkASSERT_RELEASE(textRange == run->textRange());
         result.fTextShift = runOffsetInLine;
         result.clip = SkRect::MakeXYWH(runOffsetInLine,
                                        sizes().runTop(run, this->fAscentStyle),
@@ -593,7 +593,7 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
     ClusterIndex endIndex;
     std::tie(found, startIndex, endIndex) = run->findLimitingClusters(textRange);
     if (!found) {
-        SkASSERT(textRange.empty() || limitToClusters);
+        SkASSERT_RELEASE(textRange.empty() || limitToClusters);
         return result;
     }
 
@@ -668,7 +668,7 @@ void TextLine::iterateThroughClustersInGlyphsOrder(bool reversed,
         auto run = this->fOwner->run(r);
         auto trimmedRange = fClusterRange.intersection(run.clusterRange());
         auto trailedRange = fGhostClusterRange.intersection(run.clusterRange());
-        SkASSERT(trimmedRange.start == trailedRange.start);
+        SkASSERT_RELEASE(trimmedRange.start == trailedRange.start);
 
         auto trailed = fOwner->clusters(trailedRange);
         auto trimmed = fOwner->clusters(trimmedRange);
@@ -705,7 +705,7 @@ SkScalar TextLine::iterateThroughSingleRunByStyles(const Run* run,
                return run->advance().fX;
            }
         }
-        SkASSERT(false);
+        SkASSERT_RELEASE(false);
     }
 
     if (styleType == StyleType::kNone) {
@@ -830,7 +830,7 @@ void TextLine::iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisi
     // It asserts that 2 different ways of calculation come with the same results
     if (!includingGhostSpaces && compareRound(totalWidth, this->width()) != 0) {
         SkDebugf("ASSERT: %f != %f\n", totalWidth, this->width());
-        SkASSERT(false);
+        SkASSERT_RELEASE(false);
     }
 }
 
@@ -972,7 +972,7 @@ void TextLine::getRectsForRange(TextRange textRange0,
                 }
                 break;
                 default:
-                    SkASSERT(false);
+                    SkASSERT_RELEASE(false);
                 break;
             }
 

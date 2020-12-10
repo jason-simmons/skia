@@ -69,7 +69,7 @@ void Run::commit() {
     fFont.getBounds(fGlyphs.data(), fGlyphs.size(), fBounds.data(), nullptr);
 }
 SkScalar Run::calculateWidth(size_t start, size_t end, bool clip) const {
-    SkASSERT(start <= end);
+    SkASSERT_RELEASE(start <= end);
     // clip |= end == size();  // Clip at the end of the run?
     SkScalar shift = 0;
     if (fSpaced && end > start) {
@@ -85,7 +85,7 @@ SkScalar Run::calculateWidth(size_t start, size_t end, bool clip) const {
 }
 
 void Run::copyTo(SkTextBlobBuilder& builder, size_t pos, size_t size) const {
-    SkASSERT(pos + size <= this->size());
+    SkASSERT_RELEASE(pos + size <= this->size());
     const auto& blobBuffer = builder.allocRunPos(fFont, SkToInt(size));
     sk_careful_memcpy(blobBuffer.glyphs, fGlyphs.data() + pos, size * sizeof(SkGlyphID));
 
@@ -234,7 +234,7 @@ void Run::shift(const Cluster* cluster, SkScalar offset) {
 
 void Run::updateMetrics(InternalLineMetrics* endlineMetrics) {
 
-    SkASSERT(isPlaceholder());
+    SkASSERT_RELEASE(isPlaceholder());
     auto placeholderStyle = this->placeholderStyle();
     // Difference between the placeholder baseline and the line bottom
     SkScalar baselineAdjustment = 0;

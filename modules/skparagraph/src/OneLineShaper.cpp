@@ -175,7 +175,7 @@ void OneLineShaper::finish(TextRange blockText, SkScalar height, SkScalar& advan
         auto text = block.fText;
         if (lastTextEnd != text.start) {
             SkDEBUGF("Text ranges mismatch: ...:%d] - [%d:%d] (%d-%d)\n", lastTextEnd, text.start, text.end,  glyphs.start, glyphs.end);
-            SkASSERT(false);
+            SkASSERT_RELEASE(false);
         }
         lastTextEnd = text.end;
 
@@ -229,7 +229,7 @@ void OneLineShaper::finish(TextRange blockText, SkScalar height, SkScalar& advan
     advanceX = fAdvance.fX;
     if (lastTextEnd != blockText.end) {
         SkDEBUGF("Last range mismatch: %d - %d\n", lastTextEnd, blockText.end);
-        SkASSERT(false);
+        SkASSERT_RELEASE(false);
     }
 }
 
@@ -260,7 +260,7 @@ void OneLineShaper::addFullyResolved() {
 void OneLineShaper::addUnresolvedWithRun(GlyphRange glyphRange) {
     RunBlock unresolved(fCurrentRun, clusteredText(glyphRange), glyphRange, 0);
     if (unresolved.fGlyphs.width() == fCurrentRun->size()) {
-        SkASSERT(unresolved.fText.width() == fCurrentRun->fTextRange.width());
+        SkASSERT_RELEASE(unresolved.fText.width() == fCurrentRun->fTextRange.width());
     } else if (fUnresolvedBlocks.size() > 0) {
         auto& lastUnresolved = fUnresolvedBlocks.back();
         if (lastUnresolved.fRun != nullptr &&
@@ -381,7 +381,7 @@ void OneLineShaper::iterateThroughFontStyles(TextRange textRange,
         if (blockRange.empty()) {
             continue;
         }
-        SkASSERT(combinedBlock.fRange.width() == 0 || combinedBlock.fRange.end == block.fRange.start);
+        SkASSERT_RELEASE(combinedBlock.fRange.width() == 0 || combinedBlock.fRange.end == block.fRange.start);
 
         if (!combinedBlock.fRange.empty()) {
             if (block.fStyle.matchOneAttribute(StyleType::kFont, combinedBlock.fStyle)) {
